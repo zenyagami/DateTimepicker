@@ -1,210 +1,138 @@
-/*
- * Copyright (C) 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.android.datetimepicker.date;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView.LayoutParams;
-import android.widget.BaseAdapter;
-
-import com.android.datetimepicker.date.SimpleMonthView.OnDayClickListener;
-import com.android.datetimepicker.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
-/**
- * An adapter for a list of {@link SimpleMonthView} items.
- */
-public class SimpleMonthAdapter extends BaseAdapter implements OnDayClickListener {
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 
-    private static final String TAG = "SimpleMonthAdapter";
+public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.OnDayClickListener {
+	protected static int WEEK_7_OVERHANG_HEIGHT = 7;
+	private final Context mContext;
+	private final DatePickerController mController;
+	private CalendarDay mSelectedDay;
 
-    private final Context mContext;
-    private final DatePickerController mController;
+	public SimpleMonthAdapter(Context context, DatePickerController datePickerController) {
+		this.mContext = context;
+		this.mController = datePickerController;
+		init();
+		setSelectedDay(this.mController.getSelectedDay());
+	}
 
-    private CalendarDay mSelectedDay;
+	private boolean isSelectedDayInMonth(int year, int month) {
+		return (this.mSelectedDay.year == year) && (this.mSelectedDay.month == month);
+	}
 
-    protected static int WEEK_7_OVERHANG_HEIGHT = 7;
-    protected static final int MONTHS_IN_YEAR = 12;
+	public int getCount() {
+		return 12 * (1 + (this.mController.getMaxYear() - this.mController.getMinYear()));
+	}
 
-    /**
-     * A convenience class to represent a specific date.
-     */
-    public static class CalendarDay {
-        private Calendar calendar;
-        int year;
-        int month;
-        int day;
+	public Object getItem(int position) {
+		return null;
+	}
 
-        public CalendarDay() {
-            setTime(System.currentTimeMillis());
-        }
+	public long getItemId(int position) {
+		return position;
+	}
 
-        public CalendarDay(long timeInMillis) {
-            setTime(timeInMillis);
-        }
+	public View getView(int position, View convertView, ViewGroup parent) {
+		SimpleMonthView simpleMonthView;
+		if (convertView != null)
+			simpleMonthView = (SimpleMonthView) convertView;
+		else {
+			simpleMonthView = new SimpleMonthView(this.mContext);
+			simpleMonthView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+			simpleMonthView.setClickable(true);
+			simpleMonthView.setOnDayClickListener(this);
+		}
+		HashMap<String, Integer> monthParams = (HashMap<String, Integer>) simpleMonthView.getTag();
+		if (monthParams == null)
+			monthParams = new HashMap<String, Integer>();
+		monthParams.clear();
+		int month = position % 12;
+		int year = position / 12 + this.mController.getMinYear();
+		Log.d("SimpleMonthAdapter", "Year: " + year + ", Month: " + month);
+		int selectedDay = -1;
+		if (isSelectedDayInMonth(year, month))
+			selectedDay = this.mSelectedDay.day;
+		simpleMonthView.reuse();
+		monthParams.put("selected_day", Integer.valueOf(selectedDay));
+		monthParams.put("year", Integer.valueOf(year));
+		monthParams.put("month", Integer.valueOf(month));
+		monthParams.put("week_start", Integer.valueOf(this.mController.getFirstDayOfWeek()));
+		simpleMonthView.setMonthParams(monthParams);
+		simpleMonthView.invalidate();
+		return simpleMonthView;
+	}
 
-        public CalendarDay(Calendar calendar) {
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-        }
+	protected void init() {
+		this.mSelectedDay = new CalendarDay(System.currentTimeMillis());
+	}
 
-        public CalendarDay(int year, int month, int day) {
-            setDay(year, month, day);
-        }
+	public void onDayClick(SimpleMonthView simpleMonthView, CalendarDay calendarDay) {
+		if (calendarDay != null)
+			onDayTapped(calendarDay);
+	}
 
-        public void set(CalendarDay date) {
-            year = date.year;
-            month = date.month;
-            day = date.day;
-        }
+	protected void onDayTapped(CalendarDay calendarDay) {
+		this.mController.tryVibrate();
+		this.mController.onDayOfMonthSelected(calendarDay.year, calendarDay.month, calendarDay.day);
+		setSelectedDay(calendarDay);
+	}
 
-        public void setDay(int year, int month, int day) {
-            this.year = year;
-            this.month = month;
-            this.day = day;
-        }
+	public void setSelectedDay(CalendarDay calendarDay) {
+		this.mSelectedDay = calendarDay;
+		notifyDataSetChanged();
+	}
 
-        private void setTime(long timeInMillis) {
-            if (calendar == null) {
-                calendar = Calendar.getInstance();
-            }
-            calendar.setTimeInMillis(timeInMillis);
-            month = calendar.get(Calendar.MONTH);
-            year = calendar.get(Calendar.YEAR);
-            day = calendar.get(Calendar.DAY_OF_MONTH);
-        }
-    }
+	public static class CalendarDay {
+		private Calendar calendar;
+		int day;
+		int month;
+		int year;
 
-    public SimpleMonthAdapter(Context context,
-            DatePickerController controller) {
-        mContext = context;
-        mController = controller;
-        init();
-        setSelectedDay(mController.getSelectedDay());
-    }
+		public CalendarDay() {
+			setTime(System.currentTimeMillis());
+		}
 
-    /**
-     * Updates the selected day and related parameters.
-     *
-     * @param day The day to highlight
-     */
-    public void setSelectedDay(CalendarDay day) {
-        mSelectedDay = day;
-        notifyDataSetChanged();
-    }
+		public CalendarDay(int year, int month, int day) {
+			setDay(year, month, day);
+		}
 
-    public CalendarDay getSelectedDay() {
-        return mSelectedDay;
-    }
+		public CalendarDay(long timeInMillis) {
+			setTime(timeInMillis);
+		}
 
-    /**
-     * Set up the gesture detector and selected time
-     */
-    protected void init() {
-        mSelectedDay = new CalendarDay(System.currentTimeMillis());
-    }
+		public CalendarDay(Calendar calendar) {
+			this.year = calendar.get(Calendar.YEAR);
+			this.month = calendar.get(Calendar.MONTH);
+			this.day = calendar.get(Calendar.DAY_OF_MONTH);
+		}
 
-    @Override
-    public int getCount() {
-        return ((mController.getMaxYear() - mController.getMinYear()) + 1) * MONTHS_IN_YEAR;
-    }
+		private void setTime(long timeInMillis) {
+			if (this.calendar == null)
+				this.calendar = Calendar.getInstance();
+			this.calendar.setTimeInMillis(timeInMillis);
+			this.month = this.calendar.get(Calendar.MONTH);
+			this.year = this.calendar.get(Calendar.YEAR);
+			this.day = this.calendar.get(Calendar.DAY_OF_MONTH);
+		}
 
-    @Override
-    public Object getItem(int position) {
-        return null;
-    }
+		public void set(CalendarDay calendarDay) {
+			this.year = calendarDay.year;
+			this.month = calendarDay.month;
+			this.day = calendarDay.day;
+		}
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @SuppressLint("NewApi")
-    @SuppressWarnings("unchecked")
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        SimpleMonthView v;
-        HashMap<String, Integer> drawingParams = null;
-        if (convertView != null) {
-            v = (SimpleMonthView) convertView;
-            // We store the drawing parameters in the view so it can be recycled
-            drawingParams = (HashMap<String, Integer>) v.getTag();
-        } else {
-            v = new SimpleMonthView(mContext);
-            // Set up the new view
-            LayoutParams params = new LayoutParams(
-                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            v.setLayoutParams(params);
-            v.setClickable(true);
-            v.setOnDayClickListener(this);
-        }
-        if (drawingParams == null) {
-            drawingParams = new HashMap<String, Integer>();
-        }
-        drawingParams.clear();
-
-        final int month = position % MONTHS_IN_YEAR;
-        final int year = position / MONTHS_IN_YEAR + mController.getMinYear();
-        Log.d(TAG, "Year: " + year + ", Month: " + month);
-
-        int selectedDay = -1;
-        if (isSelectedDayInMonth(year, month)) {
-            selectedDay = mSelectedDay.day;
-        }
-
-        // Invokes requestLayout() to ensure that the recycled view is set with the appropriate
-        // height/number of weeks before being displayed.
-        v.reuse();
-
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_SELECTED_DAY, selectedDay);
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_YEAR, year);
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_MONTH, month);
-        drawingParams.put(SimpleMonthView.VIEW_PARAMS_WEEK_START, mController.getFirstDayOfWeek());
-        v.setMonthParams(drawingParams);
-        v.invalidate();
-        return v;
-    }
-
-    private boolean isSelectedDayInMonth(int year, int month) {
-        return mSelectedDay.year == year && mSelectedDay.month == month;
-    }
-
-
-    @Override
-    public void onDayClick(SimpleMonthView view, CalendarDay day) {
-        if (day != null) {
-            onDayTapped(day);
-        }
-    }
-
-    /**
-     * Maintains the same hour/min/sec but moves the day to the tapped day.
-     *
-     * @param day The day that was tapped
-     */
-    protected void onDayTapped(CalendarDay day) {
-        mController.tryVibrate();
-        mController.onDayOfMonthSelected(day.year, day.month, day.day);
-        setSelectedDay(day);
-    }
+		public void setDay(int year, int month, int day) {
+			this.year = year;
+			this.month = month;
+			this.day = day;
+		}
+	}
 }

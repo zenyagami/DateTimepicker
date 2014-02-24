@@ -1,44 +1,19 @@
-/*
- * Copyright (C) 2013 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.android.datetimepicker.date;
 
-import com.android.datetimepicker.date.DatePickerDialog.OnDateChangedListener;
-import com.android.datetimepicker.date.SimpleMonthAdapter.CalendarDay;
+abstract interface DatePickerController {
+	public abstract int getFirstDayOfWeek();
 
-/**
- * Controller class to communicate among the various components of the date picker dialog.
- */
-interface DatePickerController {
+	public abstract int getMaxYear();
 
-    void onYearSelected(int year);
+	public abstract int getMinYear();
 
-    void onDayOfMonthSelected(int year, int month, int day);
+	public abstract SimpleMonthAdapter.CalendarDay getSelectedDay();
 
-    void registerOnDateChangedListener(OnDateChangedListener listener);
+	public abstract void onDayOfMonthSelected(int year, int month, int day);
 
-    void unregisterOnDateChangedListener(OnDateChangedListener listener);
+	public abstract void onYearSelected(int year);
 
-    CalendarDay getSelectedDay();
+	public abstract void registerOnDateChangedListener(DatePickerDialog.OnDateChangedListener onDateChangedListener);
 
-    int getFirstDayOfWeek();
-
-    int getMinYear();
-
-    int getMaxYear();
-
-    void tryVibrate();
+	public abstract void tryVibrate();
 }
