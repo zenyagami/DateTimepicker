@@ -172,7 +172,7 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
             Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        View view = inflater.inflate(R.layout.time_picker_dialog, container);
+        View view = inflater.inflate(R.layout.time_picker_dialogs, container);
         KeyboardListener keyboardListener = new KeyboardListener();
         LinearLayout ly =(LinearLayout) view.findViewById(R.id.picker_dialog);
         ly.setOnKeyListener(keyboardListener);
