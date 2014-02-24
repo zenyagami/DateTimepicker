@@ -19,7 +19,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/circle_background"
-    android:id="@+id/time_picker_dialog"
+    android:id="@+id/picker_dialog"
     android:focusable="true" >
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
         <include
             layout="@layout/time_header_label"
             android:layout_width="match_parent"
+            android:id="@+id/header"
             android:layout_height="@dimen/header_height"
             android:layout_gravity="center" />
     </FrameLayout>

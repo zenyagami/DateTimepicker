@@ -16,12 +16,11 @@
 
 package com.android.datetimepicker.time;
 
-import android.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ObjectAnimator;
 import android.app.ActionBar.LayoutParams;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -31,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -121,11 +121,11 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
     public TimePickerDialog() {
         // Empty constructor required for dialog fragment.
     }
-
-    public TimePickerDialog(Context context, int theme, OnTimeSetListener callback,
+    
+    /*public TimePickerDialog(Context context, int theme, OnTimeSetListener callback,
             int hourOfDay, int minute, boolean is24HourMode) {
         // Empty constructor required for dialog fragment.
-    }
+    }*/
 
     public static TimePickerDialog newInstance(OnTimeSetListener callback,
             int hourOfDay, int minute, boolean is24HourMode) {
@@ -172,9 +172,10 @@ public class TimePickerDialog extends DialogFragment implements OnValueSelectedL
             Bundle savedInstanceState) {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
-        View view = inflater.inflate(R.layout.time_picker_dialog, null);
+        View view = inflater.inflate(R.layout.time_picker_dialog, container);
         KeyboardListener keyboardListener = new KeyboardListener();
-        view.findViewById(R.id.time_picker_dialog).setOnKeyListener(keyboardListener);
+        LinearLayout ly =(LinearLayout) view.findViewById(R.id.picker_dialog);
+        ly.setOnKeyListener(keyboardListener);
 
         Resources res = getResources();
         mHourPickerDescription = res.getString(R.string.hour_picker_description);

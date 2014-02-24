@@ -16,8 +16,10 @@
 
 package com.android.datetimepicker.time;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
+
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
@@ -41,8 +43,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 
 import com.android.datetimepicker.R;
+import com.googlecode.eyesfree.utils.Utils;
 
-import java.util.HashMap;
 
 public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
     private static final String TAG = "RadialPickerLayout";
@@ -175,7 +177,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             return;
         }
         mIs24HourMode = is24HourMode;
-        mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
+     //   mHideAmPm = mAccessibilityManager.isTouchExplorationEnabled()? true : mIs24HourMode;
 
         // Initialize the circle and AM/PM circles if applicable.
         mCircleView.initialize(context, mHideAmPm);
@@ -539,13 +541,40 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
             mTransition = new AnimatorSet();
             mTransition.playTogether(anims);
             mTransition.start();
+            if(!Utils.isHC())
+            {
+            	  int hourAlpha = (index == HOUR_INDEX) ? 255 : 0;
+                  int minuteAlpha = (index == MINUTE_INDEX) ? 255 : 0;
+            	//if nots is HC or later we "hide" views
+            	ViewHelper.setAlpha(mHourRadialTextsView,hourAlpha);
+            	ViewHelper.setAlpha(mHourRadialSelectorView,hourAlpha);
+            	ViewHelper.setAlpha(mMinuteRadialTextsView,minuteAlpha);
+            	ViewHelper.setAlpha(mMinuteRadialSelectorView,minuteAlpha);
+            	
+            }
+            
         } else {
             int hourAlpha = (index == HOUR_INDEX) ? 255 : 0;
             int minuteAlpha = (index == MINUTE_INDEX) ? 255 : 0;
-            mHourRadialTextsView.setAlpha(hourAlpha);
-            mHourRadialSelectorView.setAlpha(hourAlpha);
-            mMinuteRadialTextsView.setAlpha(minuteAlpha);
-            mMinuteRadialSelectorView.setAlpha(minuteAlpha);
+            if(Utils.isHC())
+            {
+            	mHourRadialTextsView.setAlpha(hourAlpha);
+                mHourRadialSelectorView.setAlpha(hourAlpha);
+                mMinuteRadialTextsView.setAlpha(minuteAlpha);
+                mMinuteRadialSelectorView.setAlpha(minuteAlpha);
+            }else
+            {
+            	ViewHelper.setAlpha(mHourRadialTextsView,hourAlpha);
+            	ViewHelper.setAlpha(mHourRadialSelectorView,hourAlpha);
+            	ViewHelper.setAlpha(mMinuteRadialTextsView,minuteAlpha);
+            	ViewHelper.setAlpha(mMinuteRadialSelectorView,minuteAlpha);
+            	
+            	/*Utils.setAlphaForView(mHourRadialTextsView, hourAlpha);
+            	Utils.setAlphaForView(, hourAlpha);
+            	Utils.setAlphaForView(, minuteAlpha);
+            	Utils.setAlphaForView(, );*/
+            }
+            
         }
 
     }
@@ -559,7 +588,6 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
         final Boolean[] isInnerCircle = new Boolean[1];
         isInnerCircle[0] = false;
 
-        long millis = SystemClock.uptimeMillis();
 
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -594,7 +622,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                 } else {
                     // If we're in accessibility mode, force the touch to be legal. Otherwise,
                     // it will only register within the given touch target zone.
-                    boolean forceLegal = mAccessibilityManager.isTouchExplorationEnabled();
+                    boolean forceLegal = com.android.datetimepicker.Utils.isJellybeanOrLater()? mAccessibilityManager.isTouchExplorationEnabled():false;
                     // Calculate the degrees that is currently being touched.
                     mDownDegrees = getDegreesFromCoords(eventX, eventY, forceLegal, isInnerCircle);
                     if (mDownDegrees != -1) {

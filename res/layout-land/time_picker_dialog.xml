@@ -15,7 +15,7 @@
   ~ limitations under the License
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/time_picker_dialog"
+    android:id="@+id/picker_dialog"
     android:layout_height="@dimen/dialog_height"
     android:layout_width="wrap_content"
     android:orientation="horizontal"
@@ -35,6 +35,7 @@
             android:background="@color/white" >
             <include
                 layout="@layout/time_header_label"
+                android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/header_height"
                 android:layout_gravity="center" />

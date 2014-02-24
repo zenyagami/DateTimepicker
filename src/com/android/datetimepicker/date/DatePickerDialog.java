@@ -16,18 +16,15 @@
 
 package com.android.datetimepicker.date;
 
-import android.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.text.format.DateFormat;
+import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
-import android.text.format.Time;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,13 +32,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import com.android.datetimepicker.R;
 import com.android.datetimepicker.Utils;

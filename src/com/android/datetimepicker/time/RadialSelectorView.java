@@ -16,11 +16,11 @@
 
 package com.android.datetimepicker.time;
 
-import android.animation.Keyframe;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
+import com.nineoldandroids.animation.Keyframe;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.PropertyValuesHolder;
+import com.nineoldandroids.animation.ValueAnimator;
+import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;

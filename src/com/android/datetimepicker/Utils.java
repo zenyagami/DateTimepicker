@@ -16,9 +16,9 @@
 
 package com.android.datetimepicker;
 
-import android.animation.Keyframe;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
+import com.nineoldandroids.animation.Keyframe;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.format.Time;
