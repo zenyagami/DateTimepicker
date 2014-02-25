@@ -43,7 +43,7 @@
 
     <dimen name="date_picker_component_width">200dp</dimen>
     <dimen name="date_picker_header_height">24dp</dimen>
-    <dimen name="selected_calendar_layout_height">80dp</dimen>
+    <dimen name="selected_calendar_layout_height">120dp</dimen>
     <dimen name="date_picker_view_animator_height">200dp</dimen>
     <dimen name="done_button_height">40dp</dimen>
 
