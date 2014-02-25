@@ -9,10 +9,17 @@ There are 2 dialogs, Date Picker and Time Picker. both can work from a fragment 
 The library needs (in libs folder) nineoldAndroid for animations
 LDPI resolution its working ;)
 
-Usage:
+# Usage:
 Date:
+```
+#!java
 DatePickerDialog date =DatePickerDialog.newInstance(OnDateSetListener,int year,int month,boolean vibrate);
 date.show(getSupportFragmentManager(), TAG);
+
+```
 Time:
+```
+#!java
 TimePickerDialog time = TimePickerDialog.newInstanceOnTimeSetListener callback,int hourOfDay, int minute, boolean is24HourMode);
 time.show(getSupportFragmentManager(), TAG);
+```
