@@ -1,4 +1,4 @@
-package com.android.datetimepicker.date;
+package com.zenkun.datetimepicker.date;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import com.android.datetimepicker.R;
-import com.android.datetimepicker.Utils;
+import com.zenkun.datetimepicker.Utils;
 
 public class SimpleMonthView extends View {
 	protected static int DAY_SELECTED_CIRCLE_SIZE;

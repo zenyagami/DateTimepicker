@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.datetimepicker.time;
+package com.zenkun.datetimepicker.time;
 
 import com.nineoldandroids.animation.AnimatorSet;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -622,7 +622,7 @@ public class RadialPickerLayout extends FrameLayout implements OnTouchListener {
                 } else {
                     // If we're in accessibility mode, force the touch to be legal. Otherwise,
                     // it will only register within the given touch target zone.
-                    boolean forceLegal = com.android.datetimepicker.Utils.isJellybeanOrLater()? mAccessibilityManager.isTouchExplorationEnabled():false;
+                    boolean forceLegal = com.zenkun.datetimepicker.Utils.isJellybeanOrLater()? mAccessibilityManager.isTouchExplorationEnabled():false;
                     // Calculate the degrees that is currently being touched.
                     mDownDegrees = getDegreesFromCoords(eventX, eventY, forceLegal, isInnerCircle);
                     if (mDownDegrees != -1) {

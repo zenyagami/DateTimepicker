@@ -61,7 +61,7 @@
                 android:textColor="@color/done_text_color" />
         </LinearLayout>
     </LinearLayout>
-    <com.android.datetimepicker.time.RadialPickerLayout
+    <com.zenkun.datetimepicker.time.RadialPickerLayout
         android:id="@+id/time_picker"
         android:layout_width="@dimen/picker_dimen"
         android:layout_height="match_parent"

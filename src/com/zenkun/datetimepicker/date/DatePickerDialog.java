@@ -1,4 +1,4 @@
-package com.android.datetimepicker.date;
+package com.zenkun.datetimepicker.date;
 
 import android.app.Activity;
 import android.content.res.Resources;
@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.android.datetimepicker.R;
-import com.android.datetimepicker.Utils;
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.zenkun.datetimepicker.Utils;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;

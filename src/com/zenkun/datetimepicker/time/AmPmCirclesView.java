@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.datetimepicker.time;
+package com.zenkun.datetimepicker.time;
 
 import android.content.Context;
 import android.content.res.Resources;

@@ -1,4 +1,4 @@
-package com.android.datetimepicker.date;
+package com.zenkun.datetimepicker.date;
 
 abstract interface DatePickerController {
 	public abstract int getFirstDayOfWeek();

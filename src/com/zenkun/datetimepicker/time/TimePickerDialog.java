@@ -14,9 +14,12 @@
  * limitations under the License
  */
 
-package com.android.datetimepicker.time;
+package com.zenkun.datetimepicker.time;
 
 import com.nineoldandroids.animation.ObjectAnimator;
+import com.zenkun.datetimepicker.Utils;
+import com.zenkun.datetimepicker.time.RadialPickerLayout.OnValueSelectedListener;
+
 import android.app.ActionBar.LayoutParams;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -35,8 +38,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.datetimepicker.R;
-import com.android.datetimepicker.Utils;
-import com.android.datetimepicker.time.RadialPickerLayout.OnValueSelectedListener;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;

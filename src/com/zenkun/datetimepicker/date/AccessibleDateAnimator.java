@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.datetimepicker.date;
+package com.zenkun.datetimepicker.date;
 
 import android.content.Context;
 import android.text.format.DateUtils;
