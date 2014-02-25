@@ -9,6 +9,8 @@ There are 2 dialogs, Date Picker and Time Picker. both can work from a fragment 
 The library needs (in libs folder) nineoldAndroid for animations
 LDPI resolution its working ;)
 
+![DatePicker](https://raw.github.com/zenyagami/DateTimepicker/jb-mr2-release/Screenshot_2014-02-25-12-57-40.png)
+![TimePicker](https://raw.github.com/zenyagami/DateTimepicker/jb-mr2-release/Screenshot_2014-02-25-12-57-54.png)
 # Usage:
 Date:
 ```
