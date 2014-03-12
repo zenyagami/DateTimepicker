@@ -22,6 +22,6 @@ date.show(getSupportFragmentManager(), TAG);
 Time:
 ```
 #!java
-TimePickerDialog time = TimePickerDialog.newInstanceOnTimeSetListener callback,int hourOfDay, int minute, boolean is24HourMode);
+TimePickerDialog time = TimePickerDialog.newInstance(OnTimeSetListener callback,int hourOfDay, int minute, boolean is24HourMode);
 time.show(getSupportFragmentManager(), TAG);
 ```
